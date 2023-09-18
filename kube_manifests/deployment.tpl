@@ -22,5 +22,5 @@ spec:
     spec:
       containers:
         - name: ${REPONAME}
-          image: ${DOCKERHUB_ID}/demo-app:dev
+          image: irllc/demo-app:ENV
           imagePullPolicy: Always
