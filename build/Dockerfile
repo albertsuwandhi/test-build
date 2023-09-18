@@ -9,5 +9,5 @@ WORKDIR $SERVER_DIR
 # COPY ./dist/package.json ./
 # RUN npm install
 RUN ls -al
-COPY ./dist ./
-CMD node app.js
+COPY ./build/dist ./
+CMD [ "node", "app.js" ]
