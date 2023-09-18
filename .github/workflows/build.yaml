@@ -81,6 +81,7 @@ jobs:
         SVC_NAME: ${{ vars.SVC_NAME }}
         SVC_PORT: ${{ vars.SVC_PORT }}
         SVC_TARGETPORT: ${{ vars.SVC_TARGETPORT }}
+        DOCKERHUB_ID: ${{ secrets.DOCKERHUB_ID }}
     needs: ["build-container-image"]
     runs-on: ubuntu-latest
     steps:
@@ -108,4 +109,5 @@ jobs:
     - name: Apply YAML
       run: |
         kubectl apply -f deployment.yml
+        kkubectl rollout restart deployment web-api --namespace=${NAMESPACE}
              
