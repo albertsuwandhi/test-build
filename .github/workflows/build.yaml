@@ -31,7 +31,7 @@ jobs:
       - name: envsubst
         run : |
           - envsubst < kube_manifests/namespace.tpl > namespace.yml && cat ./namespace.yml
-          - envsubst < kube_manifests/secret.tpl > secret.yml && cat ./secret.yml
+          - envsubst < kube_manifests/service.tpl > service.yml && cat ./service.yml
           - envsubst < kube_manifests/doppler-secret.tpl > doppler-secret.yml && cat ./dopller-secret.yml
     #   # envsubs
     #   - name: npm install
