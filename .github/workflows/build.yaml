@@ -21,6 +21,9 @@ jobs:
       # checkout to the repository on the build machine
       - name: Checkout
         uses: actions/checkout@v3
+      # envsubs
+      - name: npm install
+        run: apt-get update && apt-get install gettext-base && envsubst --version
       # checkout to the repository on the build machine
       - name: Install Node
         uses: actions/setup-node@v2
