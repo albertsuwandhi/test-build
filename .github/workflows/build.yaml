@@ -78,6 +78,8 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
+    - id: env
+      run: printenv
     - name: envsubst
       run : |
        envsubst < kube_manifests/deployment.tpl > deployment.yml && cat ./deployment.yml 
