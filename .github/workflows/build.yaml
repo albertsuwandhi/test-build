@@ -46,9 +46,12 @@ jobs:
       - name: update kubeconfig
         run: |
           aws eks update-kubeconfig --name ${{ secrets.EKS_CLUSTER_NAME }} --region=ap-southeast-1
-      - name: update kubeconfig
+      - name: Show nodes
         run: |
           kubectl get nodes -o wide
+      - name: Apply YAML
+        run: |
+          kubectl apply -f namespace.yml -f service.yml
     #   # envsubs
     #   - name: npm install
     #     run: sudo apt-get update && sudo apt-get install gettext-base && envsubst --version
