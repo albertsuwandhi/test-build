@@ -23,7 +23,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: envsubst
-        run : envsubst < kube_manifest/namespace.tpl > namespace.yml && cat ./namespace.yml
+        run : envsubst < kube_manifests/namespace.tpl > namespace.yml && cat ./namespace.yml
     #   # envsubs
     #   - name: npm install
     #     run: sudo apt-get update && sudo apt-get install gettext-base && envsubst --version
