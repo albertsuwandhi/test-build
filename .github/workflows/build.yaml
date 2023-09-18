@@ -11,10 +11,10 @@ on:
         - DEV
         - PROD
 env:
-    NAMESPACE: ${{ vars.NAMESPACE }}
-    SVC_NAME: ${{ vars.SVC_NAME }}
-    SVC_PORT: ${{ vars.SVC_PORT }}
-    SVC_TARGETPORT: ${{ vars.SVC_TARGETPORT }}
+    # NAMESPACE: ${{ vars.NAMESPACE }}
+    # SVC_NAME: ${{ vars.SVC_NAME }}
+    # SVC_PORT: ${{ vars.SVC_PORT }}
+    # SVC_TARGETPORT: ${{ vars.SVC_TARGETPORT }}
     REPONAME: ${{ github.event.repository.name }}
 
 #   DOCKERHUB_ID: ${{ secrets.DOCKERHUB_ID }}
@@ -23,6 +23,11 @@ jobs:
   build-container-image:
     name: Build
     environment: ${{ github.event.inputs.environment }}
+    env:
+        NAMESPACE: ${{ vars.NAMESPACE }}
+        SVC_NAME: ${{ vars.SVC_NAME }}
+        SVC_PORT: ${{ vars.SVC_PORT }}
+        SVC_TARGETPORT: ${{ vars.SVC_TARGETPORT }}
     runs-on: ubuntu-latest
     steps:
       # checkout to the repository on the build machine
@@ -33,7 +38,7 @@ jobs:
           envsubst < kube_manifests/namespace.tpl > namespace.yml && cat ./namespace.yml 
           envsubst < kube_manifests/service.tpl > service.yml && cat ./service.yml
           envsubst < kube_manifests/doppler-secret.tpl > doppler-secret.yml && cat ./doppler-secret.yml
-      - name: kubectl 
+      - name: Install kubectl 
         run : |
           curl -LO "https://dl.k8s.io/release/v1.25.2/bin/linux/amd64/kubectl"
           sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
@@ -46,7 +51,7 @@ jobs:
       - name: update kubeconfig
         run: |
           aws eks update-kubeconfig --name ${{ secrets.EKS_CLUSTER_NAME }} --region=ap-southeast-1
-      - name: Show nodes
+      - name: kubectl get nodes 
         run: |
           kubectl get nodes -o wide
       - name: Apply YAML
