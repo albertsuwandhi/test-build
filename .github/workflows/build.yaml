@@ -10,7 +10,8 @@ on:
         options: 
         - DEV
         - PROD
-# env:
+env:
+    NAMESPACE: ${{ env.NAMESPACE }}
 #   DOCKERHUB_ID: ${{ secrets.DOCKERHUB_ID }}
 #   DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
 jobs:
