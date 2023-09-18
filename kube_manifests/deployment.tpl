@@ -22,5 +22,5 @@ spec:
     spec:
       containers:
         - name: ${REPONAME}
-          image: albertsuwandhi/demo-app:${ENV}
+          image: albertsuwandhi/demo-app:${TAGS}
           imagePullPolicy: Always

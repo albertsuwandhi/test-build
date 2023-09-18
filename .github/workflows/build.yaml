@@ -57,17 +57,20 @@ jobs:
           tags: | 
             ${{ secrets.DOCKERHUB_ID }}/demo-app:DEV
             ${{ secrets.DOCKERHUB_ID }}/demo-app:${{ steps.commit.outputs.short }}
+          outputs:
+            tags: ${{ steps.commit.outputs.short }}
   deploy:
     name: Deploy to EKS
     environment: ${{ github.event.inputs.environment }}
     env:
         NAMESPACE: ${{ vars.NAMESPACE }}
         REPONAME: ${{ github.event.repository.name }}
-        SVC_NAME: ${{ vars.SVC_NAME }}
-        SVC_PORT: ${{ vars.SVC_PORT }}
-        SVC_TARGETPORT: ${{ vars.SVC_TARGETPORT }}
+        # SVC_NAME: ${{ vars.SVC_NAME }}
+        # SVC_PORT: ${{ vars.SVC_PORT }}
+        # SVC_TARGETPORT: ${{ vars.SVC_TARGETPORT }}
         DOCKERHUB_ID: ${{ secrets.DOCKERHUB_ID }}
         ENV: ${{ github.event.inputs.environment }}
+        TAGS: ${{ needs.build-container-image.outputs.tags }}
     needs: ["build-container-image"]
     runs-on: ubuntu-latest
     steps:
@@ -95,5 +98,4 @@ jobs:
     - name: Apply YAML
       run: |
         kubectl apply -f deployment.yml
-        kubectl rollout restart deployment web-api --namespace=${NAMESPACE}
              
