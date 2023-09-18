@@ -11,7 +11,7 @@ on:
         - DEV
         - PROD
 env:
-    NAMESPACE: ${{ env.NAMESPACE }}
+    NAMESPACE: ${{ vars.NAMESPACE }}
 #   DOCKERHUB_ID: ${{ secrets.DOCKERHUB_ID }}
 #   DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
 jobs:
