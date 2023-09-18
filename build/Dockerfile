@@ -6,7 +6,7 @@ RUN mkdir -p $SERVER_DIR
 
 WORKDIR $SERVER_DIR
 
-COPY ./dist/package.json ./
-RUN npm install
+# COPY ./dist/package.json ./
+# RUN npm install
 COPY ./dist ./
 CMD node app.js
