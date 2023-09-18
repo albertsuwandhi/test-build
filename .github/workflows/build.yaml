@@ -33,12 +33,12 @@ jobs:
           envsubst < kube_manifests/namespace.tpl > namespace.yml && cat ./namespace.yml
           envsubst < kube_manifests/service.tpl > service.yml && cat ./service.yml
           envsubst < kube_manifests/doppler-secret.tpl > doppler-secret.yml && cat ./doppler-secret.yml
-      - uses: azure/setup-kubectl@v3
-        with:
-          version: '1.25' # default is latest stable
-        id: install
-      - name: kubectl version
-        run : kubectl version --short
+      - name: kubectl 
+        run : |
+          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" 
+          sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+          chmod +x /usr/local/bin/kubectl
+          kubectl version --short
     #   # envsubs
     #   - name: npm install
     #     run: sudo apt-get update && sudo apt-get install gettext-base && envsubst --version
