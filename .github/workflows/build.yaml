@@ -55,7 +55,7 @@ jobs:
           file: ./build/Dockerfile
           push: true
           tags: | 
-            ${{ secrets.DOCKERHUB_ID }}/demo-app:dev
+            ${{ secrets.DOCKERHUB_ID }}/demo-app:DEV
             ${{ secrets.DOCKERHUB_ID }}/demo-app:${{ steps.commit.outputs.short }}
   deploy:
     name: Deploy to EKS
