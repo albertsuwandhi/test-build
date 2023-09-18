@@ -57,8 +57,8 @@ jobs:
           tags: | 
             ${{ secrets.DOCKERHUB_ID }}/demo-app:DEV
             ${{ secrets.DOCKERHUB_ID }}/demo-app:${{ steps.commit.outputs.short }}
-          outputs:
-            tags: ${{ steps.commit.outputs.short }}
+    outputs:
+      tags: ${{ steps.commit.outputs.short }}
   deploy:
     name: Deploy to EKS
     environment: ${{ github.event.inputs.environment }}
@@ -98,4 +98,4 @@ jobs:
     - name: Apply YAML
       run: |
         kubectl apply -f deployment.yml
-             
+
