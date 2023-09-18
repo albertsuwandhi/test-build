@@ -4,7 +4,7 @@ metadata:
   name: ${SVC_NAME}
   namespace: ${NAMESPACE}
   labels:
-    run: ${SVC_NAME}
+    app: ${SVC_NAME}
 spec:
   selector:
     app: ${SVC_NAME}
