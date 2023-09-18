@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+      "module": "commonjs",
+      "target": "es6",
+      "noImplicitAny": true,
+      "moduleResolution": "node",
+      "sourceMap": true,
+      "rootDir": "src",
+      "outDir": "build/dist",
+      "baseUrl": "src",
+      "experimentalDecorators": true,
+      "emitDecoratorMetadata": true,
+      "esModuleInterop": true,
+      "typeRoots": ["node_modules/@types"],
+      "lib": ["es2017", "dom"],
+      "paths": {
+        "@app/*": ["*"],
+        "@logger": ["common/logger/"]
+      }
+    },
+    "include": ["src"]
+  }
+  
