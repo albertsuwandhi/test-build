@@ -82,11 +82,6 @@ jobs:
         SVC_PORT: ${{ vars.SVC_PORT }}
         SVC_TARGETPORT: ${{ vars.SVC_TARGETPORT }}
     needs: ["build-container-image"]
-    env:
-        NAMESPACE: ${{ vars.NAMESPACE }}
-        SVC_NAME: ${{ vars.SVC_NAME }}
-        SVC_PORT: ${{ vars.SVC_PORT }}
-        SVC_TARGETPORT: ${{ vars.SVC_TARGETPORT }}
     runs-on: ubuntu-latest
     steps:
     - name: envsubst
