@@ -62,6 +62,7 @@ jobs:
     environment: ${{ github.event.inputs.environment }}
     env:
         NAMESPACE: ${{ vars.NAMESPACE }}
+        REPONAME: ${{ github.event.repository.name }}
         SVC_NAME: ${{ vars.SVC_NAME }}
         SVC_PORT: ${{ vars.SVC_PORT }}
         SVC_TARGETPORT: ${{ vars.SVC_TARGETPORT }}
