@@ -37,7 +37,6 @@ jobs:
         run : |
           curl -LO "https://dl.k8s.io/release/v1.25.2/bin/linux/amd64/kubectl"
           sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-          kubectl version 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
