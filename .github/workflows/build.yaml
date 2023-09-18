@@ -109,5 +109,5 @@ jobs:
     - name: Apply YAML
       run: |
         kubectl apply -f deployment.yml
-        kkubectl rollout restart deployment web-api --namespace=${NAMESPACE}
+        kubectl rollout restart deployment web-api --namespace=${NAMESPACE}
              
