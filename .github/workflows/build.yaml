@@ -13,6 +13,10 @@ on:
         options: 
         - DEV
         - PROD
+permissions:
+  id-token: write # This is required for aws oidc connection
+  contents: read # This is required for actions/checkout
+  pull-requests: write # This is required for gh bot to comment PR
 # env:
 #     REPONAME: ${{ github.event.repository.name }}
 jobs:
