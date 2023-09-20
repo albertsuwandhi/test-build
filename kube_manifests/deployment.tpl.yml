@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
         - name: ${REPONAME}
-          image: ${DOCKERHUB_ID}:${REPONAME}:${TAGS}
+          image: ${DOCKERHUB_ID}/${REPONAME}:${TAGS}
           imagePullPolicy: Always
           # envFrom:
           #   - secretRef:
