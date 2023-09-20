@@ -58,8 +58,8 @@ jobs:
         REPONAME: ${{ github.event.repository.name }}
         DOCKERHUB_ID: ${{ secrets.DOCKERHUB_ID }}
         ENV: ${{ github.event.inputs.environment }}
-        TAGS: ${{ needs.build-container-image.outputs.tags }}
-    needs: ["build-container-image"]
+        TAGS: ${{ needs.build-push-container-image.outputs.tags }}
+    needs: ["build-push-container-image"]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
