@@ -2,6 +2,9 @@ name: 'Build Container Image'
 on:
 #   push:
 #     branches: main
+  # push:
+  #   branches-ignore:
+  #     - main
   workflow_dispatch:
     inputs:
       environment:
@@ -78,8 +81,8 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
-    - id: env
-      run: printenv
+    # - id: env
+    #   run: printenv
     - name: envsubst
       run : |
        envsubst < kube_manifests/deployment.tpl > deployment.yml && cat ./deployment.yml 
@@ -87,12 +90,18 @@ jobs:
       run : |
        curl -LO "https://dl.k8s.io/release/v1.25.2/bin/linux/amd64/kubectl"
        sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-    - name: Configure AWS Credentials
+    # - name: Configure AWS Credentials
+    #   uses: aws-actions/configure-aws-credentials@v4
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    #     aws-region: ap-southeast-1
+    - name: Configure AWS Credentials 
       uses: aws-actions/configure-aws-credentials@v4
       with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ap-southeast-1
+        role-to-assume: ${{ secrets.AWS_ROLE }}
+        aws-region: ${{ secrets.AWS_REGION }}
+        role-session-name: GitHub-Deploy-EKS
     - name: update kubeconfig
       run: |
         aws eks update-kubeconfig --name ${{ secrets.EKS_CLUSTER_NAME }} --region=ap-southeast-1
