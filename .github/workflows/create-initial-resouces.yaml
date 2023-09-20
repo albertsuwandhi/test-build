@@ -1,6 +1,7 @@
 name: 'Create Initial Resources'
 
 on:
+  push: 
   workflow_dispatch:
     inputs:
       environment:
@@ -88,6 +89,6 @@ jobs:
         aws eks update-kubeconfig --name ${{ vars.EKS_CLUSTER_NAME }} --region=${{ vars.AWS_REGION }}
     - name: Apply YAML
       run: |
-        kubectl create secret generic doppler-token-secret-$REPONAME  -—namespace doppler-operator-system --from-literal=serviceToken=${{ secrets.DOPPLER_SERVICE_TOKEN }} 
+        kubectl create secret generic doppler-token-secret-$REPONAME --namespace doppler-operator-system --from-literal=serviceToken=${{ secrets.DOPPLER_SERVICE_TOKEN }} 
         kubectl apply -f dopplersecret.yml
 
