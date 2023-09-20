@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ${REPONAME}
+  namespace: ${NAMESPACE}
+  labels:
+    app: ${REPONAME}
+  # annotations:
+  #   secrets.doppler.com/reload: 'true'
+spec:
+  replicas: ${REPLICAS}
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: ${REPONAME}
+  template:
+    metadata:
+      labels:
+        app: ${REPONAME}
+    spec:
+      containers:
+        - name: ${REPONAME}
+          image: ${DOCKERHUB_ID}/${REPONAME}:${TAGS}
+          imagePullPolicy: Always
+          # envFrom:
+          #   - secretRef:
+          #       name: ${REPONAME}-secret
+          # ports:
+          #   - name: http
+          #     containerPort: 10001
+          # resources:
+          #   requests: 
+          #     memory: "512Mi"
+          #     cpu: "250m"
+          #   limits:
+          #     memory: "1024Mi"
+          #     cpu: "500m"
+          # readinessProbe:
+          #   httpGet:
+          #     path: /docs
+          #     port: 10001
+          #   initialDelaySeconds: 30
+          #   periodSeconds: 120
+          # livenessProbe:
+          #   httpGet:
+          #     path: /docs
+          #     port: 10001
+          #   initialDelaySeconds: 15
+          #   periodSeconds: 120
+          
