@@ -70,7 +70,7 @@ jobs:
     - name: install kubectl
       uses: azure/setup-kubectl@v3
       with:
-        version: 'v1.23.17' # default is latest stable, please use the same version of the cluster or +/- 1 
+        version: 'v1.25.12' # default is latest stable, please use the same version of the cluster or +/- 1 
     - name: Configure AWS Credentials 
       uses: aws-actions/configure-aws-credentials@v4
       with:
