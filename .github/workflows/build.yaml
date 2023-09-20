@@ -1,42 +1,26 @@
-name: 'Build Container Image'
+name: 'Build and Deploy to Dev Cluster'
+
 on:
-#   push:
-#     branches: main
-  # push:
-  #   branches-ignore:
-  #     - main
+  push:
+    branches-ignore:
+      - main
   workflow_dispatch:
-    inputs:
-      environment:
-        type: choice
-        description: environment
-        options: 
-        - DEV
-        - PROD
+
 permissions:
-  id-token: write # This is required for aws oidc connection
+  id-token: write # This is required for AWS oidc connection
   contents: read # This is required for actions/checkout
   pull-requests: write # This is required for gh bot to comment PR
-# env:
-#     REPONAME: ${{ github.event.repository.name }}
+
 jobs:
-  build-container-image:
-    name: Build Container Image
-    environment: ${{ github.event.inputs.environment }}
-    # env:
-    #     NAMESPACE: ${{ vars.NAMESPACE }}
-    #     SVC_NAME: ${{ vars.SVC_NAME }}
-    #     SVC_PORT: ${{ vars.SVC_PORT }}
-    #     SVC_TARGETPORT: ${{ vars.SVC_TARGETPORT }}
+  build-push-container-image:
+    name: Build and Push Container Image
+    environment: DEV
     runs-on: ubuntu-latest
     steps:
-      # checkout to the repository on the build machine
       - name: Checkout
         uses: actions/checkout@v3
       - id: commit
         uses: prompt/actions-commit-hash@v3
-      - id: env
-        run: printenv
       - name: Install Node
         uses: actions/setup-node@v3
         with:
@@ -47,16 +31,13 @@ jobs:
         run: | 
           npm install
           npm run build
-      # Login to Docker Hub using the secrets provided
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_ID}}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
-      # create a buildkit builder instance
       - name: setup Docker Buildx
         uses: docker/setup-buildx-action@v2
-      # build the container image and push it to DockerHub.
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
@@ -68,15 +49,13 @@ jobs:
             ${{ secrets.DOCKERHUB_ID }}/demo-app:${{ steps.commit.outputs.short }}
     outputs:
       tags: ${{ steps.commit.outputs.short }}
-  deploy:
+
+  deploy-to-eks:
     name: Deploy to EKS
-    environment: ${{ github.event.inputs.environment }}
+    environment: DEV
     env:
         NAMESPACE: ${{ vars.NAMESPACE }}
         REPONAME: ${{ github.event.repository.name }}
-        # SVC_NAME: ${{ vars.SVC_NAME }}
-        # SVC_PORT: ${{ vars.SVC_PORT }}
-        # SVC_TARGETPORT: ${{ vars.SVC_TARGETPORT }}
         DOCKERHUB_ID: ${{ secrets.DOCKERHUB_ID }}
         ENV: ${{ github.event.inputs.environment }}
         TAGS: ${{ needs.build-container-image.outputs.tags }}
@@ -85,8 +64,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
-    # - id: env
-    #   run: printenv
     - name: envsubst
       run : |
        envsubst < kube_manifests/deployment.tpl > deployment.yml && cat ./deployment.yml 
@@ -109,9 +86,6 @@ jobs:
     - name: update kubeconfig
       run: |
         aws eks update-kubeconfig --name ${{ secrets.EKS_CLUSTER_NAME }} --region=ap-southeast-1
-    # - name: kubectl get nodes 
-    #   run: |
-    #     kubectl get nodes -o wide
     - name: Apply YAML
       run: |
         kubectl apply -f deployment.yml
