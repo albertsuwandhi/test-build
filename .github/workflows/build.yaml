@@ -58,9 +58,10 @@ jobs:
     environment: DEV
     env:
         NAMESPACE: ${{ vars.NAMESPACE }}
-        REPONAME: ${{ github.event.repository.name }}
+        REPLICAS: ${{ vars.REPLICAS }}
         DOCKERHUB_ID: ${{ vars.DOCKERHUB_ID }}
         TAGS: ${{ needs.build-push-container-image.outputs.tags }}
+        REPONAME: ${{ github.event.repository.name }}
     needs: ["build-push-container-image"]
     runs-on: ubuntu-latest
     steps:
