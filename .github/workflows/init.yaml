@@ -1,4 +1,4 @@
-name: 'Create Initial Resources'
+name: 'Create Initial Resources-Init'
 
 on:
   push: 
